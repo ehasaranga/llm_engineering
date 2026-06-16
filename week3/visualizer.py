@@ -5,12 +5,22 @@ import math
 from openai import OpenAI
 from dotenv import load_dotenv
 
+import os
+os.environ.pop("SSLKEYLOGFILE", None)
+
+import httpx
+
 load_dotenv(override=True)
+
+#http_client = httpx.Client(verify=False)
 
 
 class TokenPredictor:
     def __init__(self, model_name: str):
-        self.client = OpenAI()
+        
+        http_client = httpx.Client(verify=False)
+
+        self.client = OpenAI(http_client=http_client)
         self.messages = []
         self.predictions = []
         self.model_name = model_name
